@@ -22,6 +22,7 @@ import {
 } from './data/conversation';
 import { getInitialFirstName, saveFirstName } from './utils/urlParams';
 import { installBackRedirect } from './utils/backRedirect';
+import { preloadVTurbAssets } from './utils/preloadVideo';
 import { WhatsAppHeader } from './components/WhatsAppHeader';
 import { ChatBubble } from './components/ChatBubble';
 import { TypingIndicator } from './components/TypingIndicator';
@@ -247,6 +248,11 @@ export default function App() {
     setIsRedirecting(true);
 
     if (userName) saveFirstName(userName);
+
+    // Give the video player's assets a head start now, ~1.2s before the live
+    // stage actually mounts below — late enough to not compete with the
+    // first page's own load, early enough that playback doesn't stall.
+    preloadVTurbAssets();
 
     // Transition to the Second Stage (Facebook Live with Brazilian live chat)
     setTimeout(() => {
