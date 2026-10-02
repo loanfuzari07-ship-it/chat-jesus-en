@@ -390,9 +390,10 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
 
   // Handle Offer Checkout Click: validates the email, fires SpiderTrack's
   // InitiateCheckout and sends to the (Wiapy/DigitalGoat) checkout link,
-  // already decorated. The checkout URL's pre-filled email is intentionally
-  // disguised (see disguiseEmail above) — SpiderTrack's own identify() call
-  // still uses the real, correct email so purchase matching stays accurate.
+  // already decorated. A/B test: the email is NOT passed to the checkout
+  // link anymore — the lead has to type it again at DigitalGoat's checkout.
+  // SpiderTrack's own identify() call still uses the real, correct email
+  // typed here so purchase matching stays accurate regardless.
   const handleSelectOffer = (value: number) => {
     const trimmedEmail = email.trim();
     if (!EMAIL_RE.test(trimmedEmail)) {
@@ -410,8 +411,6 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
     const checkoutBase = OFFER_CHECKOUT_URLS[value] || OFFER_CHECKOUT_URLS[50];
 
     let targetUrl = buildTargetUrl(checkoutBase, {
-      email: disguiseEmail(trimmedEmail),
-      'customer.email': disguiseEmail(trimmedEmail),
       name: firstName || '',
       first_name: firstName || '',
       'customer.name': firstName || ''
@@ -419,12 +418,13 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
 
     // SpiderTrack: identifies the visitor by the REAL email typed (so it can be
     // matched to the purchase later via webhook) and decorates the link with
-    // the tracking id, before firing InitiateCheckout and navigating to checkout.
+    // the tracking id. InitiateCheckout is NOT fired here on purpose — the
+    // DigitalGoat checkout page fires its own IC, so firing it here too would
+    // double-count one checkout click as two InitiateCheckout events.
     try {
       if (window.trck) {
         window.trck.identify({ email: trimmedEmail });
         targetUrl = window.trck.decorate(targetUrl);
-        window.trck.track('InitiateCheckout', { value, currency: 'USD' });
       }
     } catch {
       // tracking must never block checkout
