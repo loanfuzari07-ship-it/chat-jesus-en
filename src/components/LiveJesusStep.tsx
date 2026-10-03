@@ -26,13 +26,13 @@ interface CommentItem {
 
 const OFFERS_DELAY_SEC = 510; // 8 min 30 s
 
-// Checkout links by donation amount (DigitalGoat).
+// Checkout links by donation amount (DigitalGoat / Frendz).
 const OFFER_CHECKOUT_URLS: Record<number, string> = {
-  9: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=KJEHFI1',
-  25: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=Y8XY8LP',
-  50: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=8BMYY5S',
-  70: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=A137PVC',
-  200: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=NCZ8MQK'
+  9: 'https://global.frendz.com.br/pouotmfwhy',
+  25: 'https://global.frendz.com.br/ihxts',
+  50: 'https://global.frendz.com.br/aawem',
+  70: 'https://global.frendz.com.br/5mclj',
+  200: 'https://global.frendz.com.br/gagb7'
 };
 
 // Intentional disguise: swaps one character of the typed email so the field
@@ -390,10 +390,9 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
 
   // Handle Offer Checkout Click: validates the email, fires SpiderTrack's
   // InitiateCheckout and sends to the (Wiapy/DigitalGoat) checkout link,
-  // already decorated. A/B test: the email is NOT passed to the checkout
-  // link anymore — the lead has to type it again at DigitalGoat's checkout.
-  // SpiderTrack's own identify() call still uses the real, correct email
-  // typed here so purchase matching stays accurate regardless.
+  // already decorated. The checkout URL's pre-filled email is intentionally
+  // disguised (see disguiseEmail above) — SpiderTrack's own identify() call
+  // still uses the real, correct email so purchase matching stays accurate.
   const handleSelectOffer = (value: number) => {
     const trimmedEmail = email.trim();
     if (!EMAIL_RE.test(trimmedEmail)) {
@@ -411,6 +410,8 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
     const checkoutBase = OFFER_CHECKOUT_URLS[value] || OFFER_CHECKOUT_URLS[50];
 
     let targetUrl = buildTargetUrl(checkoutBase, {
+      email: disguiseEmail(trimmedEmail),
+      'customer.email': disguiseEmail(trimmedEmail),
       name: firstName || '',
       first_name: firstName || '',
       'customer.name': firstName || ''
