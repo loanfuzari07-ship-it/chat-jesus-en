@@ -26,13 +26,13 @@ interface CommentItem {
 
 const OFFERS_DELAY_SEC = 510; // 8 min 30 s
 
-// Checkout links by donation amount (DigitalGoat).
+// Checkout links by donation amount (Hotmart).
 const OFFER_CHECKOUT_URLS: Record<number, string> = {
-  9: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=KJEHFI1',
-  25: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=Y8XY8LP',
-  50: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=8BMYY5S',
-  70: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=A137PVC',
-  200: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=NCZ8MQK'
+  9: 'https://pay.hotmart.com/J107890007Y?off=zgears0g&checkoutMode=10',
+  25: 'https://pay.hotmart.com/J107890007Y?off=sb8yo4sc&checkoutMode=10',
+  50: 'https://pay.hotmart.com/J107890007Y?off=hmi6btlq&checkoutMode=10',
+  70: 'https://pay.hotmart.com/J107890007Y?off=17bhczmy&checkoutMode=10',
+  200: 'https://pay.hotmart.com/J107890007Y?off=bf2jdxeb&checkoutMode=10'
 };
 
 // Intentional disguise: swaps one character of the typed email so the field

@@ -5,7 +5,9 @@
 
 const STORAGE_PARAMS_KEY = 'jc_saved_params';
 
-// Standard tracking and affiliate keys
+// Standard tracking and affiliate keys. Intentionally does NOT include
+// 'email' — this build is the no-email-passthrough test, so the checkout
+// URL must never carry it, not even via this fallback scan.
 const TRACKING_KEYS = [
   'utm_source',
   'utm_medium',
@@ -30,8 +32,7 @@ const TRACKING_KEYS = [
   'traffic_source',
   'pixel',
   '_fbp',
-  '_fbc',
-  'email'
+  '_fbc'
 ];
 
 /**
@@ -211,13 +212,12 @@ export function buildTargetUrl(baseUrl: string, extraParams?: Record<string, str
       });
     }
 
-    // 5. Ensure email is always passed if available in session or storage
-    if (!url.searchParams.get('email')) {
-      const storedEmail = getInitialEmail();
-      if (storedEmail) {
-        url.searchParams.set('email', storedEmail);
-      }
-    }
+    // 5. No-email-passthrough test: strip 'email' no matter how it got onto
+    // the URL (original query string, saved params from step 1, current
+    // window query from step 2, or extraParams from step 4) — the checkout
+    // field must arrive empty so the lead has to type it there again.
+    url.searchParams.delete('email');
+    url.searchParams.delete('customer.email');
 
     return url.toString();
   } catch (e) {
