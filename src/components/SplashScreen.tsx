@@ -42,7 +42,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
       </div>
 
       <div className="text-[#8c6a2d] text-[15px] font-medium tracking-wide">
-        A moment of peace…
+        Connecting you with Jesus...
       </div>
 
       <div className="flex gap-1.5 items-center">
