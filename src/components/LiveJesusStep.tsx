@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { preloadVTurbAssets } from '../utils/preloadVideo';
 import {
   LIVE_COMMENTS,
   LIVE_OFFERINGS,
@@ -6,8 +7,6 @@ import {
 } from '../data/liveChatData';
 import {
   getInitialFirstName,
-  getInitialEmail,
-  saveUserEmail,
   buildTargetUrl
 } from '../utils/urlParams';
 
@@ -24,48 +23,15 @@ interface CommentItem {
   timestamp: number;
 }
 
-const OFFERS_DELAY_SEC = 510; // 8 min 30 s
+const OFFERS_DELAY_SEC = 657; // 10:57
 
-// Checkout links by donation amount (Hotmart).
+// Checkout URLs are configured separately for the English dollar offers.
 const OFFER_CHECKOUT_URLS: Record<number, string> = {
-  9: 'https://pay.hotmart.com/J107890007Y?off=zgears0g&checkoutMode=10',
-  25: 'https://pay.hotmart.com/J107890007Y?off=sb8yo4sc&checkoutMode=10',
-  50: 'https://pay.hotmart.com/J107890007Y?off=hmi6btlq&checkoutMode=10',
-  70: 'https://pay.hotmart.com/J107890007Y?off=17bhczmy&checkoutMode=10',
-  200: 'https://pay.hotmart.com/J107890007Y?off=bf2jdxeb&checkoutMode=10'
+  25: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=Y8XY8LP',
+  50: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=QZK0PVD',
+  70: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=31YQF5Z',
+  100: 'https://pay.digitalgoat.com.br/checkout/cmupt5qgu013m01on5igkgplm?offer=YC35KU2'
 };
-
-// Intentional disguise: swaps one character of the typed email so the field
-// that arrives pre-filled at checkout looks valid but is wrong on purpose
-// (e.g. test@gmail.com -> taste@gmail.com). The person must notice and
-// correct it before paying — kept on purpose as a human-verification/
-// anti-bot measure. Do not remove.
-const DISGUISE_MAP: [RegExp, string][] = [
-  [/l/, 'I'], [/i/, 'l'], [/a/, 'e'], [/e/, 'a'], [/p/, 'q'],
-  [/q/, 'p'], [/b/, 'p'], [/u/, 'v'], [/v/, 'u'], [/o/, '0']
-];
-
-function disguiseEmail(email: string): string {
-  const at = email.lastIndexOf('@');
-  if (at < 2) return email;
-  const local = email.slice(0, at);
-  const domain = email.slice(at);
-  for (let i = 1; i < local.length - 1; i++) {
-    const ch = local[i];
-    for (const [pattern, replacement] of DISGUISE_MAP) {
-      if (pattern.test(ch)) {
-        return local.slice(0, i) + replacement + local.slice(i + 1) + domain;
-      }
-    }
-  }
-  if (local.length >= 4) {
-    const o = Math.floor(local.length / 2) - 1;
-    return local.slice(0, o) + local[o + 1] + local[o] + local.slice(o + 2) + domain;
-  }
-  return email;
-}
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // window.trck comes from SpiderTrack's t.js (loaded in index.html's <head>).
 declare global {
@@ -101,11 +67,6 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
     return false;
   });
 
-  // Step 1: email state
-  const [email, setEmail] = useState<string>(() => getInitialEmail());
-  const [emailError, setEmailError] = useState<string>('');
-  const [isShaking, setIsShaking] = useState<boolean>(false);
-
   // Modal for all offerings
   const [showAllOfferings, setShowAllOfferings] = useState<boolean>(false);
 
@@ -115,7 +76,6 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
   const poolRef = useRef<LiveCommenter[]>([...LIVE_COMMENTS]);
   const poolIdxRef = useRef<number>(0);
   const chatBoxRef = useRef<HTMLDivElement>(null);
-  const emailInputRef = useRef<HTMLInputElement>(null);
 
   // Post time
   useEffect(() => {
@@ -134,14 +94,6 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
     }, 7000);
     return () => clearInterval(interval);
   }, []);
-
-  // Email input handler
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setEmail(value);
-    saveUserEmail(value);
-    if (emailError) setEmailError('');
-  };
 
   // Seed initial comments
   useEffect(() => {
@@ -218,7 +170,7 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
     }
   }, [comments]);
 
-  // Timer & VTurb message sync for reveal (7 minutes 37 seconds = 457s)
+  // Timer & VTurb message sync for reveal at 10:57 (657 seconds)
   useEffect(() => {
     if (isRevealed) return;
 
@@ -249,7 +201,7 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
     // Also check direct video element / smartplayer instance if available
     const pollInterval = setInterval(() => {
       try {
-        const vturb = document.getElementById('vid-6abe9e98fb23b657fbd5be68');
+        const vturb = document.getElementById('vid-6ad53ae248a15a578a6de50f');
         if (vturb) {
           const video = vturb.querySelector('video') || (vturb.shadowRoot && vturb.shadowRoot.querySelector('video'));
           if (video && typeof video.currentTime === 'number' && video.currentTime >= OFFERS_DELAY_SEC) {
@@ -270,6 +222,7 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
 
   // Inject VTurb player script when component mounts
   useEffect(() => {
+    preloadVTurbAssets();
     // Remove any previous instances to allow fresh execution
     const prevPlayerScript = document.getElementById('vturb-script-v4');
     if (prevPlayerScript) prevPlayerScript.remove();
@@ -278,7 +231,7 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
 
     const s = document.createElement('script');
     s.id = 'vturb-script-v4';
-    s.src = 'https://scripts.converteai.net/15c55340-cc1a-4abb-9c8a-da5918cd9642/players/6abe9e98fb23b657fbd5be68/v4/player.js';
+    s.src = 'https://scripts.converteai.net/15c55340-cc1a-4abb-9c8a-da5918cd9642/players/6ad53ae248a15a578a6de50f/v4/player.js';
     s.async = true;
     document.head.appendChild(s);
 
@@ -321,7 +274,7 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
   }, []);
 
   const handlePlayerAreaClick = () => {
-    const vturb = document.getElementById('vid-6abe9e98fb23b657fbd5be68');
+    const vturb = document.getElementById('vid-6ad53ae248a15a578a6de50f');
     if (vturb) {
       const v = vturb.querySelector('video') || (vturb.shadowRoot && vturb.shadowRoot.querySelector('video'));
       if (v && v.paused) {
@@ -388,52 +341,24 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
     setShowCommentInput(false);
   };
 
-  // Handle Offer Checkout Click: validates the email, fires SpiderTrack's
-  // InitiateCheckout and sends to the (Wiapy/DigitalGoat) checkout link,
-  // already decorated. A/B test: the email is NOT passed to the checkout
-  // link anymore — the lead has to type it again at DigitalGoat's checkout.
-  // SpiderTrack's own identify() call still uses the real, correct email
-  // typed here so purchase matching stays accurate regardless.
+  // No contact-information step before choosing an offer.
   const handleSelectOffer = (value: number) => {
-    const trimmedEmail = email.trim();
-    if (!EMAIL_RE.test(trimmedEmail)) {
-      setEmailError('Please enter your email to receive the details of your donation.');
-      setIsShaking(true);
-      setTimeout(() => setIsShaking(false), 500);
-      emailInputRef.current?.focus();
-      return;
-    }
-
-    setEmailError('');
-    saveUserEmail(trimmedEmail);
-
-    // Checkout link according to the chosen amount
-    const checkoutBase = OFFER_CHECKOUT_URLS[value] || OFFER_CHECKOUT_URLS[50];
-
+    const checkoutBase = OFFER_CHECKOUT_URLS[value];
+    if (!checkoutBase) return;
+    const selected = new URL(checkoutBase);
     let targetUrl = buildTargetUrl(checkoutBase, {
-      name: firstName || '',
+      offer: selected.searchParams.get('offer') || '',
+      off: selected.searchParams.get('off') || '',
       first_name: firstName || '',
-      'customer.name': firstName || ''
+      name: firstName || ''
     });
-
-    // SpiderTrack: identifies the visitor by the REAL email typed (so it can be
-    // matched to the purchase later via webhook) and decorates the link with
-    // the tracking id. InitiateCheckout is NOT fired here on purpose — the
-    // DigitalGoat checkout page fires its own IC, so firing it here too would
-    // double-count one checkout click as two InitiateCheckout events.
     try {
       if (window.trck) {
-        window.trck.identify({ email: trimmedEmail });
-        targetUrl = window.trck.decorate(targetUrl);
+        const decorated = window.trck.decorate(targetUrl);
+        if (typeof decorated === 'string' && decorated) targetUrl = decorated;
       }
-    } catch {
-      // tracking must never block checkout
-    }
-
-    // Tell the back-redirect trap this exit is intentional, so pressing Back
-    // mid-checkout doesn't bounce the person into the redirect page.
+    } catch {}
     window.__goingToCheckout = true;
-
     window.location.href = targetUrl;
   };
 
@@ -478,7 +403,7 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
           {/* POST HEADER (.p-top) */}
           <div className="flex items-center gap-2.5 px-3.5 py-3">
             <img
-              src="/images/hostAvatar2.webp"
+              src="/images/jesus-avatar.webp"
               alt="Jesus Official"
               width={42}
               height={42}
@@ -544,7 +469,7 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
 
           {/* PLAYER CONTAINER (.player-wrap) */}
           <div
-            className="relative bg-black w-full overflow-hidden cursor-pointer"
+            className="relative bg-black w-full max-w-[400px] mx-auto cursor-pointer"
             onClick={handlePlayerAreaClick}
           >
             <style>{`
@@ -553,13 +478,13 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
               }
             `}</style>
 
-            {/* VTurb Smartplayer Web Component with 178.05% vertical aspect ratio */}
+            {/* VTurb controls the height; its 3:4 placeholder reserves loading space. */}
             <div
               className="w-full"
               dangerouslySetInnerHTML={{
                 __html: `
-                  <vturb-smartplayer id="vid-6abe9e98fb23b657fbd5be68" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;">
-                    <div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 178.05555555555554% 0 0; z-index: 0; background-color: black;"></div>
+                  <vturb-smartplayer id="vid-6ad53ae248a15a578a6de50f" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;">
+                    <div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 133.33333333333331% 0 0; z-index: 0; background-color: black;"></div>
                   </vturb-smartplayer>
                 `
               }}
@@ -728,196 +653,50 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
             </>
           )}
 
-          {/* OFFERS SECTION: ONCE PITCH REVEALS, HIDE COMMENTS & STATS COMPLETELY, SHOW ONLY STEP 1, STEP 2 & RECENT DONATIONS */}
+          {/* Headline and offers share the existing reveal trigger. */}
           {isRevealed && (
-            <section className="p-3.5 pt-4 animate-in fade-in duration-300">
-              {/* STEP 1: EMAIL */}
-              <div className="flex items-center gap-3 p-3 bg-[#f7f8fa] border border-[#dddfe2] rounded-[10px] mb-2.5">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#d4a017] to-[#f4c534] text-white flex items-center justify-center font-extrabold text-[18px] shrink-0 shadow-[0_2px_6px_rgba(212,160,23,0.35)]">
-                  1
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-[11px] font-bold text-[#d4a017] tracking-[1.3px] uppercase mb-0.5">
-                    Step 1
-                  </div>
-                  <div className="text-[14px] sm:text-[15px] font-bold text-[#050505] leading-[1.3]">
-                    ✉️ Enter your email to receive the details of your donation and blessings
-                  </div>
-                </div>
-              </div>
-
-              {/* Email Input Box */}
-              <div
-                className={`bg-[#f7f8fa] border rounded-[10px] p-3.5 mb-4 transition-all ${
-                  isShaking ? 'animate-[shake_0.45s_ease] border-[#f02849] ring-2 ring-red-200' : 'border-[#dddfe2]'
-                }`}
-              >
-                <label
-                  htmlFor="userEmail"
-                  className="block text-[14px] font-semibold text-[#050505] mb-2"
-                >
-                  Your email:
-                </label>
-                <input
-                  ref={emailInputRef}
-                  type="email"
-                  id="userEmail"
-                  value={email}
-                  onChange={handleEmailChange}
-                  placeholder="you@example.com"
-                  className="w-full p-3 border border-[#ccd0d5] rounded-[8px] text-[16px] outline-none font-inherit focus:border-[#0866ff] focus:ring-2 focus:ring-blue-100 bg-white"
-                />
-                {emailError && (
-                  <p className="text-[#f02849] text-[12px] font-semibold mt-1.5">
-                    {emailError}
-                  </p>
-                )}
-              </div>
-
-              {/* STEP 2: CHOOSE AMOUNT */}
-              <div className="flex items-center gap-3 p-3 bg-[#f7f8fa] border border-[#dddfe2] rounded-[10px] mb-3">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#d4a017] to-[#f4c534] text-white flex items-center justify-center font-extrabold text-[18px] shrink-0 shadow-[0_2px_6px_rgba(212,160,23,0.35)]">
-                  2
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-[11px] font-bold text-[#d4a017] tracking-[1.3px] uppercase mb-0.5">
-                    Step 2
-                  </div>
-                  <div className="text-[14px] sm:text-[15px] font-bold text-[#050505] leading-[1.3]">
-                    🤍 Choose the value of your donation
-                  </div>
-                </div>
-              </div>
-
-              {/* 5 ROWS: $50 FIRST (HIGHLIGHTED IN GOLD WITH "MOST CHOSEN" TAG), THEN 70, 25, 200, 9 */}
+            <section className="p-3.5 pt-4 animate-in fade-in duration-300" aria-labelledby="offersTitle">
+              <h2 id="offersTitle" className="text-center text-[22px] font-extrabold leading-[1.3] mt-2 mb-6">
+                Choose Your Miracle Offering
+              </h2>
               <div className="space-y-2.5 mb-4">
-                {/* 1. $50 - MOST CHOSEN (Gold highlight at the top) */}
-                <div
-                  onClick={() => handleSelectOffer(50)}
-                  className="relative bg-gradient-to-r from-[#fffef8] to-[#fff9e6] border-2 border-[#f7b928] rounded-[12px] px-4 py-3.5 shadow-[0_0_0_1px_#f7b928,0_4px_12px_rgba(247,185,40,0.25)] cursor-pointer active:scale-[0.98] transition-all flex items-center justify-between"
-                >
-                  <div className="absolute -top-[11px] left-1/2 -translate-x-1/2 bg-[#f7b928] text-black text-[11px] font-extrabold px-3 py-0.5 rounded-full whitespace-nowrap shadow-xs uppercase tracking-wider">
-                    ⭐ MOST CHOSEN
-                  </div>
-                  <div>
-                    <div className="text-[10.5px] font-bold text-[#b07800]/80 tracking-[1px] uppercase mb-0.5">
-                      Send Offer
-                    </div>
-                    <div className="font-extrabold text-[22px] text-[#b07800] tracking-tight leading-none">
-                      $50
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSelectOffer(50);
-                    }}
-                    className="text-[#b07800] font-extrabold text-[14px] cursor-pointer bg-transparent border-none"
+                {[50, 25, 70, 100].map((value) => (
+                  <div
+                    key={value}
+                    aria-disabled={!OFFER_CHECKOUT_URLS[value]}
+                    onClick={() => handleSelectOffer(value)}
+                    className={`relative border-2 rounded-[12px] p-4 cursor-pointer active:scale-[0.98] transition-all flex items-center justify-between gap-3 ${
+                      value === 50
+                        ? 'bg-gradient-to-r from-[#fffef8] to-[#fff9e6] border-[#f7b928] shadow-[0_0_0_1px_#f7b928,0_4px_12px_rgba(247,185,40,0.25)]'
+                        : 'bg-white border-[#e4e6eb] hover:border-[#0866ff]'
+                    }`}
                   >
-                    CHOOSE &rarr;
-                  </button>
-                </div>
-
-                {/* 2. $70 */}
-                <div
-                  onClick={() => handleSelectOffer(70)}
-                  className="bg-white border border-[#e4e6eb] hover:border-[#0866ff] rounded-[12px] px-4 py-3.5 cursor-pointer active:scale-[0.98] transition-all flex items-center justify-between"
-                >
-                  <div>
-                    <div className="text-[10.5px] font-bold text-[#8a8d91] tracking-[1px] uppercase mb-0.5">
-                      Send Offer
+                    {value === 50 && (
+                      <div className="absolute -top-[11px] left-1/2 -translate-x-1/2 bg-[#f7b928] text-black text-[11px] font-extrabold px-3 py-0.5 rounded-full whitespace-nowrap shadow-xs uppercase tracking-wider">
+                        MOST CHOSEN
+                      </div>
+                    )}
+                    <div className={`font-bold text-[22px] ${value === 50 ? 'text-[#b07800]' : 'text-[#050505]'}`}>
+                      ${value}
                     </div>
-                    <div className="font-bold text-[20px] text-[#050505] leading-none">
-                      $70
-                    </div>
+                    <button
+                      type="button"
+                      aria-label={`Choose the $${value} offering`}
+                      disabled={!OFFER_CHECKOUT_URLS[value]}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectOffer(value);
+                      }}
+                      className={`inline-flex items-center justify-center shrink-0 whitespace-nowrap min-h-[44px] font-bold text-[13px] px-3 py-2 rounded-[8px] cursor-pointer shadow-xs transition-colors ${
+                        value === 50
+                          ? 'bg-[#f7b928] hover:bg-[#e6ac22] text-black'
+                          : 'bg-[#0866ff] hover:bg-[#0755d6] text-white'
+                      }`}
+                    >
+                      CHOOSE →
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSelectOffer(70);
-                    }}
-                    className="text-[#0866ff] font-bold text-[14px] cursor-pointer bg-transparent border-none"
-                  >
-                    CHOOSE &rarr;
-                  </button>
-                </div>
-
-                {/* 3. $25 */}
-                <div
-                  onClick={() => handleSelectOffer(25)}
-                  className="bg-white border border-[#e4e6eb] hover:border-[#0866ff] rounded-[12px] px-4 py-3.5 cursor-pointer active:scale-[0.98] transition-all flex items-center justify-between"
-                >
-                  <div>
-                    <div className="text-[10.5px] font-bold text-[#8a8d91] tracking-[1px] uppercase mb-0.5">
-                      Send Offer
-                    </div>
-                    <div className="font-bold text-[20px] text-[#050505] leading-none">
-                      $25
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSelectOffer(25);
-                    }}
-                    className="text-[#0866ff] font-bold text-[14px] cursor-pointer bg-transparent border-none"
-                  >
-                    CHOOSE &rarr;
-                  </button>
-                </div>
-
-                {/* 4. $200 */}
-                <div
-                  onClick={() => handleSelectOffer(200)}
-                  className="bg-white border border-[#e4e6eb] hover:border-[#0866ff] rounded-[12px] px-4 py-3.5 cursor-pointer active:scale-[0.98] transition-all flex items-center justify-between"
-                >
-                  <div>
-                    <div className="text-[10.5px] font-bold text-[#8a8d91] tracking-[1px] uppercase mb-0.5">
-                      Send Offer
-                    </div>
-                    <div className="font-bold text-[20px] text-[#050505] leading-none">
-                      $200
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSelectOffer(200);
-                    }}
-                    className="text-[#0866ff] font-bold text-[14px] cursor-pointer bg-transparent border-none"
-                  >
-                    CHOOSE &rarr;
-                  </button>
-                </div>
-
-                {/* 5. $9 */}
-                <div
-                  onClick={() => handleSelectOffer(9)}
-                  className="bg-white border border-[#e4e6eb] hover:border-[#0866ff] rounded-[12px] px-4 py-3.5 cursor-pointer active:scale-[0.98] transition-all flex items-center justify-between"
-                >
-                  <div>
-                    <div className="text-[10.5px] font-bold text-[#8a8d91] tracking-[1px] uppercase mb-0.5">
-                      Send Offer
-                    </div>
-                    <div className="font-bold text-[20px] text-[#050505] leading-none">
-                      $9
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSelectOffer(9);
-                    }}
-                    className="text-[#0866ff] font-bold text-[14px] cursor-pointer bg-transparent border-none"
-                  >
-                    CHOOSE &rarr;
-                  </button>
-                </div>
+                ))}
               </div>
 
               {/* FOOTER GUARANTEE */}

@@ -313,8 +313,8 @@ export default function App() {
 
   // FIRST STAGE: PURE WHATSAPP MOBILE INTERFACE (100% CLEAN, NO UNWANTED POPUPS)
   return (
-    <div className="fixed inset-0 h-screen h-[100dvh] w-full flex justify-center bg-[#efeae2] overflow-hidden select-none">
-      <div className="w-full max-w-[560px] h-full flex flex-col relative bg-[#efeae2] wa-chat-bg sm:shadow-2xl sm:border-x sm:border-neutral-300/40 overflow-hidden">
+    <div className="divine-app">
+      <div className="divine-chat-shell">
         {/* Splash Screen */}
         <SplashScreen />
 
@@ -328,21 +328,21 @@ export default function App() {
         {/* Chat Scrollable Area */}
         <div
           ref={chatContainerRef}
-          className="flex-1 overflow-y-auto overscroll-contain px-1.5 sm:px-3 py-2 flex flex-col justify-start relative"
+          className="divine-chat-scroll"
         >
-          {/* Encryption notice pill */}
+          {/* Private messages notice */}
           <div className="w-full px-2 pt-1 pb-1 flex justify-center shrink-0">
-            <div className="bg-[#fff9c4]/90 border border-[#fbc02d]/35 text-[#54656f] text-[12px] leading-[1.3] px-3 py-1.5 rounded-lg max-w-[94%] text-center shadow-xs flex items-center justify-center gap-1.5 select-none">
-              <Lock className="w-3.5 h-3.5 text-[#e65100] shrink-0" />
+            <div className="divine-welcome-note">
+              <Lock className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
               <span>
-                Messages are protected with end-to-end encryption.
+                Messages stay private in this chat.
               </span>
             </div>
           </div>
 
           {/* Date pill */}
           <div className="w-full flex justify-center my-1.5 shrink-0 select-none">
-            <span className="bg-white/80 text-[#54656f] text-[11px] font-semibold px-2.5 py-0.5 rounded-md shadow-[0_1px_0.5px_rgba(11,20,26,0.1)] uppercase tracking-wider">
+            <span className="divine-date">
               TODAY
             </span>
           </div>

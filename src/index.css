@@ -16,21 +16,6 @@
   }
 }
 
-/* Scoped WhatsApp chat background doodle pattern */
-.wa-chat-bg {
-  background-color: #efeae2;
-  position: relative;
-}
-
-.wa-chat-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' opacity='0.06'%3E%3Cpath d='M40 5 C22 5 8 19 8 37 C8 43 10 49 13 54 L8 70 L25 65 C30 67 35 68 40 68 C58 68 72 54 72 37 C72 19 58 5 40 5 Z' fill='%23128C7E' stroke='none'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-}
-
 @keyframes wa-bounce {
   0%, 60%, 100% {
     transform: translateY(0);
@@ -57,3 +42,23 @@
   background: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
+
+:root{--divine-ink:#24364a;--divine-gold:#b18b46;--divine-paper:#fbf7ef}
+.divine-app{position:fixed;inset:0;height:100vh;height:100dvh;display:flex;justify-content:center;overflow:hidden;background:#eee9df;color:var(--divine-ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.divine-chat-shell{width:100%;max-width:560px;height:100%;position:relative;display:flex;flex-direction:column;overflow:hidden;background:radial-gradient(ellipse at 50% -6%,#f8e6bc 0%,transparent 45%),radial-gradient(ellipse at 0% 65%,#efe7d7 0%,transparent 55%),linear-gradient(150deg,#fffdf8,#f7f0e3);box-shadow:0 0 90px #1c2c3e15}
+.divine-header{position:relative;z-index:30;display:flex;align-items:center;gap:10px;flex-shrink:0;padding:14px 14px;padding-top:max(14px,env(safe-area-inset-top));color:#fff8eb;background:linear-gradient(120deg,#1b2b40,#2d435a);border-bottom:1px solid #c8a86c;box-shadow:0 5px 24px #26354818}
+.divine-icon-button{display:flex;align-items:center;justify-content:center;width:36px;height:44px;flex-shrink:0;border:0;background:transparent;color:#e7d4ae;border-radius:12px;cursor:pointer}
+.divine-icon-button:hover{background:#ffffff0e}.divine-icon-button:focus-visible,.divine-choice:focus-visible,.divine-input-bar button:focus-visible{outline:3px solid #c2a168;outline-offset:3px}
+.divine-avatar-ring{position:relative;border:1px solid #c8a86c;padding:3px;border-radius:50%;flex-shrink:0;box-shadow:0 0 18px #d4ae5e30}.divine-avatar-ring img{display:block;width:48px;height:48px;border-radius:50%;object-fit:cover}.divine-avatar-ring>span{position:absolute;bottom:1px;right:1px;width:10px;height:10px;background:#d8bd85;border:2px solid #25394e;border-radius:50%}
+.divine-header-copy{flex:1;min-width:0}.divine-header-copy h1{margin:0;font-family:Georgia,serif;font-size:25px;font-weight:400;line-height:1.15}.divine-header-copy p{margin:4px 0 0;font-size:11px;line-height:1.3;color:#d9d9d8;overflow-wrap:anywhere}
+.divine-menu-wrap{position:relative}.divine-menu{position:absolute;top:48px;right:0;width:min(250px,calc(100vw - 32px));background:#fffdf8;border:1px solid #e2d5bd;border-radius:16px;padding:6px;box-shadow:0 12px 35px #1b2b4030;color:#24364a;z-index:50}.divine-menu button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:transparent;font:inherit;font-size:13px;padding:13px 10px;border-radius:10px;cursor:pointer}.divine-menu button:hover{background:#f4ecdc}.divine-menu>span{display:flex;gap:8px;align-items:center;border-top:1px solid #eee5d5;padding:11px 10px;font-size:11px;color:#8b7350}
+.divine-chat-scroll{position:relative;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:16px 9px 22px;display:flex;flex-direction:column;scrollbar-color:#cdbb99 transparent}
+.divine-welcome-note{max-width:94%;display:flex;align-items:center;justify-content:center;gap:7px;color:#75664b;font-size:11px;line-height:1.5;padding:8px 12px;text-align:center;background:#f3ead5;border:1px solid #e8dcc0;border-radius:9px}.divine-welcome-note svg{width:14px;height:14px;flex-shrink:0;color:#8d6b30}.divine-date{font-size:10px;letter-spacing:2px;color:#9c8c70;font-weight:600;padding:6px 12px}
+.divine-message-row{display:flex;width:100%;padding:0 6px;margin:6px 0;animation:divine-appear .25s ease-out}.from-jesus{justify-content:flex-start}.from-visitor{justify-content:flex-end}.divine-message{max-width:88%;min-width:76px;padding:14px 15px 9px;border-radius:20px;border:1px solid #e8dfce;background:#fffdf9;color:#2d3b49;box-shadow:0 3px 10px #60533806}.from-jesus .divine-message{border-top-left-radius:5px}.from-visitor .divine-message{background:linear-gradient(125deg,#30475f,#263a51);color:#fffaf0;border-color:#30475f;border-top-right-radius:5px;box-shadow:0 3px 12px #21364b12}.divine-message-text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:1.55;user-select:text}.divine-message-text strong{font-weight:650;color:#715321}.from-visitor .divine-message-text strong{color:#f2d7a3}.divine-message-time{display:flex;justify-content:flex-end;align-items:center;gap:5px;margin-top:7px;font-size:10px;color:#a09789;line-height:1;user-select:none}.from-visitor .divine-message-time{color:#d5c29c}
+.divine-typing{display:flex;align-items:center;gap:5px;padding:17px 20px;border:1px solid #e8dfce;border-radius:18px;border-top-left-radius:5px;background:#fffdf9}.divine-typing span{height:6px;width:6px;background:#b49a69;border-radius:50%;animation:wa-bounce 1.2s infinite}.divine-typing span:nth-child(2){animation-delay:.2s}.divine-typing span:nth-child(3){animation-delay:.4s}
+.divine-choice{width:100%;max-width:400px;min-height:48px;padding:12px 18px;border:1px solid #77501c;border-radius:15px;background:linear-gradient(130deg,#95651e,#7b4e14);color:#fffdf6;font-size:14px;font-weight:700;line-height:1.4;box-shadow:0 3px 10px #9675380c;cursor:pointer;transition:background .18s,transform .18s;overflow-wrap:anywhere}.divine-choice:hover{background:#71460f}.divine-choice:active{transform:scale(.985)}.divine-choice:disabled{opacity:.5;cursor:default}
+.divine-input-bar{z-index:30;flex-shrink:0;padding:12px 15px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:#fffdf8eb;border-top:1px solid #e8ddc8}.divine-input-bar form{display:flex;align-items:center;gap:9px;width:100%;padding:5px 6px 5px 15px;border:1px solid #ded2bc;border-radius:19px;background:#fffefa;box-shadow:0 2px 10px #7a6c5105}.divine-input-bar form:focus-within{border-color:#b18b46;box-shadow:0 0 0 2px #b18b4612}.divine-input-bar input{min-width:0;flex:1;border:0;outline:none;background:transparent;padding:8px 0;color:#24364a;font-size:16px;line-height:1.4}.divine-input-bar input::placeholder{color:#a39883}.divine-input-bar button{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:42px;height:42px;border:0;border-radius:13px;background:#273e56;color:#f3dfb8;cursor:pointer}.divine-input-bar button:disabled{opacity:.45;cursor:default}
+@keyframes divine-appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:560px){.divine-chat-scroll{padding-left:18px;padding-right:18px}.divine-message{max-width:84%}.divine-header{padding-left:20px;padding-right:20px}}
+@media(max-width:350px){.divine-header{gap:7px;padding-left:8px;padding-right:8px}.divine-header-copy h1{font-size:23px}.divine-message{max-width:91%;padding:12px}.divine-message-text{font-size:14px}.divine-input-bar{padding-left:10px;padding-right:10px}}
+@media(prefers-reduced-motion:reduce){.divine-message-row,.divine-typing span{animation:none}.divine-choice{transition:none}}

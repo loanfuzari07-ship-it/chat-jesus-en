@@ -62,7 +62,7 @@ export const LIVE_COMMENTS: LiveCommenter[] = [
   {
     name: "Roger Silvers",
     avatar: "https://randomuser.me/api/portraits/men/11.jpg",
-    text: "God is alive and real! Just gave $35 with all my heart."
+    text: "God is alive and real! Just gave $25 with all my heart."
   },
   {
     name: "Nancy Martins",
@@ -172,7 +172,7 @@ export const LIVE_COMMENTS: LiveCommenter[] = [
   {
     name: "Brendan Evans",
     avatar: "https://randomuser.me/api/portraits/men/28.jpg",
-    text: "Just gave $20. Taking hold of my blessing today!"
+    text: "Just gave $25. Taking hold of my blessing today!"
   },
   {
     name: "Yvonne Teller",
@@ -199,35 +199,35 @@ export const LIVE_COMMENTS: LiveCommenter[] = [
 // American recent offerings (recent gifts in $: 20, 35, 50, 70, 150)
 export const LIVE_OFFERINGS: LiveOffering[] = [
   { n: "Faith R.",        uf: "Columbus, OH",       v: 50,  m: 1,  av: "https://randomuser.me/api/portraits/women/71.jpg" },
-  { n: "Charles E.",      uf: "Phoenix, AZ",        v: 35,  m: 2,  av: "https://randomuser.me/api/portraits/men/42.jpg" },
+  { n: "Charles E.",      uf: "Phoenix, AZ",        v: 25,  m: 2,  av: "https://randomuser.me/api/portraits/men/42.jpg" },
   { n: "Patricia W.",     uf: "Austin, TX",         v: 50,  m: 3,  av: "https://randomuser.me/api/portraits/women/68.jpg" },
-  { n: "Marcus B.",       uf: "Charlotte, NC",      v: 20,  m: 4,  av: "https://randomuser.me/api/portraits/men/45.jpg" },
-  { n: "Barbara M.",      uf: "Orlando, FL",        v: 150, m: 6,  av: "https://randomuser.me/api/portraits/women/75.jpg" },
+  { n: "Marcus B.",       uf: "Charlotte, NC",      v: 25,  m: 4,  av: "https://randomuser.me/api/portraits/men/45.jpg" },
+  { n: "Barbara M.",      uf: "Orlando, FL",        v: 100, m: 6,  av: "https://randomuser.me/api/portraits/women/75.jpg" },
   { n: "Walter D.",       uf: "Sacramento, CA",     v: 70,  m: 7,  av: "https://randomuser.me/api/portraits/men/52.jpg" },
   { n: "Shirley C.",      uf: "Nashville, TN",      v: 50,  m: 9,  av: "https://randomuser.me/api/portraits/women/44.jpg" },
-  { n: "James W.",        uf: "Kansas City, MO",    v: 35,  m: 11, av: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { n: "Katie H.",        uf: "Pittsburgh, PA",     v: 20,  m: 12, av: "https://randomuser.me/api/portraits/women/33.jpg" },
-  { n: "David M.",        uf: "Denver, CO",         v: 150, m: 14, av: "https://randomuser.me/api/portraits/men/11.jpg" },
+  { n: "James W.",        uf: "Kansas City, MO",    v: 25,  m: 11, av: "https://randomuser.me/api/portraits/men/32.jpg" },
+  { n: "Katie H.",        uf: "Pittsburgh, PA",     v: 25,  m: 12, av: "https://randomuser.me/api/portraits/women/33.jpg" },
+  { n: "David M.",        uf: "Denver, CO",         v: 100, m: 14, av: "https://randomuser.me/api/portraits/men/11.jpg" },
   { n: "Nancy M.",        uf: "Portland, OR",       v: 50,  m: 16, av: "https://randomuser.me/api/portraits/women/21.jpg" },
   { n: "Richard T.",      uf: "Memphis, TN",        v: 70,  m: 18, av: "https://randomuser.me/api/portraits/men/22.jpg" },
   { n: "Betty R.",        uf: "Tulsa, OK",          v: 50,  m: 19, av: "https://randomuser.me/api/portraits/women/17.jpg" },
-  { n: "John A.",         uf: "Wichita, KS",        v: 20,  m: 21, av: "https://randomuser.me/api/portraits/men/36.jpg" },
-  { n: "Sandra L.",       uf: "Tampa, FL",          v: 150, m: 23, av: "https://randomuser.me/api/portraits/women/9.jpg" },
-  { n: "Margaret F.",     uf: "Richmond, VA",       v: 35,  m: 25, av: "https://randomuser.me/api/portraits/women/71.jpg" },
+  { n: "John A.",         uf: "Wichita, KS",        v: 25,  m: 21, av: "https://randomuser.me/api/portraits/men/36.jpg" },
+  { n: "Sandra L.",       uf: "Tampa, FL",          v: 100, m: 23, av: "https://randomuser.me/api/portraits/women/9.jpg" },
+  { n: "Margaret F.",     uf: "Richmond, VA",       v: 25,  m: 25, av: "https://randomuser.me/api/portraits/women/71.jpg" },
   { n: "Claude T.",       uf: "Raleigh, NC",        v: 50,  m: 27, av: "https://randomuser.me/api/portraits/men/41.jpg" },
   { n: "Carla W.",        uf: "Baton Rouge, LA",    v: 50,  m: 29, av: "https://randomuser.me/api/portraits/women/12.jpg" },
   { n: "Daniel J.",       uf: "Fresno, CA",         v: 70,  m: 32, av: "https://randomuser.me/api/portraits/men/60.jpg" },
   { n: "Dorothy K.",      uf: "Birmingham, AL",     v: 50,  m: 34, av: "https://randomuser.me/api/portraits/women/50.jpg" },
-  { n: "Matthew M.",      uf: "Omaha, NE",          v: 20,  m: 37, av: "https://randomuser.me/api/portraits/men/70.jpg" },
-  { n: "Angela S.",       uf: "Des Moines, IA",     v: 35,  m: 39, av: "https://randomuser.me/api/portraits/women/79.jpg" },
+  { n: "Matthew M.",      uf: "Omaha, NE",          v: 25,  m: 37, av: "https://randomuser.me/api/portraits/men/70.jpg" },
+  { n: "Angela S.",       uf: "Des Moines, IA",     v: 25,  m: 39, av: "https://randomuser.me/api/portraits/women/79.jpg" },
   { n: "Steven L.",       uf: "Little Rock, AR",    v: 50,  m: 42, av: "https://randomuser.me/api/portraits/men/75.jpg" },
   { n: "Rebecca M.",      uf: "Jacksonville, FL",   v: 50,  m: 45, av: "https://randomuser.me/api/portraits/women/90.jpg" },
   { n: "Anthony R.",      uf: "Louisville, KY",     v: 70,  m: 48, av: "https://randomuser.me/api/portraits/men/83.jpg" },
-  { n: "Helen A.",        uf: "Cincinnati, OH",     v: 150, m: 51, av: "https://randomuser.me/api/portraits/women/8.jpg" },
-  { n: "Mark T.",         uf: "Greenville, SC",     v: 20,  m: 54, av: "https://randomuser.me/api/portraits/men/15.jpg" },
+  { n: "Helen A.",        uf: "Cincinnati, OH",     v: 100, m: 51, av: "https://randomuser.me/api/portraits/women/8.jpg" },
+  { n: "Mark T.",         uf: "Greenville, SC",     v: 25,  m: 54, av: "https://randomuser.me/api/portraits/men/15.jpg" },
   { n: "Ursula B.",       uf: "Spokane, WA",        v: 50,  m: 58, av: "https://randomuser.me/api/portraits/women/23.jpg" },
   { n: "Sharon B.",       uf: "Boise, ID",          v: 50,  m: 63, av: "https://randomuser.me/api/portraits/women/24.jpg" },
-  { n: "Paul G.",         uf: "Albuquerque, NM",    v: 35,  m: 69, av: "https://randomuser.me/api/portraits/men/18.jpg" },
+  { n: "Paul G.",         uf: "Albuquerque, NM",    v: 25,  m: 69, av: "https://randomuser.me/api/portraits/men/18.jpg" },
   { n: "Michelle C.",     uf: "Knoxville, TN",      v: 70,  m: 74, av: "https://randomuser.me/api/portraits/women/26.jpg" },
   { n: "Kevin R.",        uf: "Madison, WI",        v: 50,  m: 81, av: "https://randomuser.me/api/portraits/men/25.jpg" }
 ];

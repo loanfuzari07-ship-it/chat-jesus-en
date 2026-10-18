@@ -20,9 +20,9 @@ export function preloadVTurbAssets(): void {
   preloaded = true;
 
   const assets: Array<{ href: string; as: string }> = [
-    { href: 'https://scripts.converteai.net/15c55340-cc1a-4abb-9c8a-da5918cd9642/players/6abe9e98fb23b657fbd5be68/v4/player.js', as: 'script' },
+    { href: 'https://scripts.converteai.net/15c55340-cc1a-4abb-9c8a-da5918cd9642/players/6ad53ae248a15a578a6de50f/v4/player.js', as: 'script' },
     { href: 'https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js', as: 'script' },
-    { href: 'https://cdn.converteai.net/15c55340-cc1a-4abb-9c8a-da5918cd9642/6abe9e56c889864e4c70922c/main.m3u8', as: 'fetch' }
+    { href: 'https://cdn.converteai.net/15c55340-cc1a-4abb-9c8a-da5918cd9642/6ad53a7f71ed47eeac0baf22/main.m3u8', as: 'fetch' }
   ];
 
   for (const { href, as } of assets) {

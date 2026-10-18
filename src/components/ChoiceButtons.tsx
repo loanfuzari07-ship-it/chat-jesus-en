@@ -25,7 +25,7 @@ export const ChoiceButtons: React.FC<ChoiceButtonsProps> = ({
           type="button"
           disabled={disabled}
           onClick={() => onSelect(option)}
-          className="w-full max-w-[400px] min-h-[46px] px-4 py-2.5 rounded-[22px] bg-[#075E54] hover:bg-[#064e46] active:bg-[#053d37] text-white font-semibold text-[14.5px] leading-snug shadow-[0_1px_3px_rgba(0,0,0,0.2)] active:scale-[0.98] transition-all flex items-center justify-center text-center cursor-pointer disabled:opacity-50"
+          className="divine-choice"
         >
           {option.label}
         </button>

