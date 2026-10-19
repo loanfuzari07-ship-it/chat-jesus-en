@@ -58,7 +58,7 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
   const [showCommentInput, setShowCommentInput] = useState<boolean>(false);
   const [viewers, setViewers] = useState<number>(1286);
 
-  // Offers revelation state (ONLY via timer or vturb event or ?ver=1 / ?debug=1 in URL)
+  // Offers reveal from actual video playback; explicit query flags are for preview only.
   const [isRevealed, setIsRevealed] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const p = new URLSearchParams(window.location.search);
@@ -170,53 +170,67 @@ export const LiveJesusStep: React.FC<LiveJesusStepProps> = ({
     }
   }, [comments]);
 
-  // Timer & VTurb message sync for reveal at 10:57 (657 seconds)
+  // Reveal at 10:57 of actual playback, never from time spent on the page.
   useEffect(() => {
     if (isRevealed) return;
 
-    const timer = setTimeout(() => {
-      setIsRevealed(true);
-    }, OFFERS_DELAY_SEC * 1000);
+    type PlaybackElement = HTMLElement & {
+      currentTime?: number;
+      inSmartAutoPlay?: boolean;
+      inResume?: boolean;
+      paused?: boolean;
+    };
+    let player: PlaybackElement | null = null;
+    let playbackStarted = false;
 
-    const handleMsg = (e: MessageEvent) => {
-      try {
-        let parsed = e.data;
-        if (typeof parsed === 'string' && parsed.includes('smartplayer')) {
-          parsed = JSON.parse(parsed);
-        }
-        if (parsed && typeof parsed === 'object') {
-          if (parsed.event === 'timeupdate' && typeof parsed.currentTime === 'number' && parsed.currentTime >= OFFERS_DELAY_SEC) {
-            setIsRevealed(true);
-          }
-          if (parsed.event === 'ended') {
-            setIsRevealed(true);
-          }
-        }
-      } catch {
-        // ignore
+    const checkProgress = (reportedTime?: number) => {
+      if (!player || player.inSmartAutoPlay === true || player.inResume === true) return;
+      const video = player.querySelector('video') || player.shadowRoot?.querySelector('video');
+      const currentTime = typeof reportedTime === 'number'
+        ? reportedTime
+        : typeof player.currentTime === 'number' ? player.currentTime : video?.currentTime;
+
+      // Also detects playback already underway when the player finishes loading.
+      if (player.paused === false || (video && !video.paused)) playbackStarted = true;
+      if (playbackStarted && typeof currentTime === 'number' && Number.isFinite(currentTime)
+          && currentTime >= OFFERS_DELAY_SEC) {
+        setIsRevealed(true);
       }
     };
-    window.addEventListener('message', handleMsg);
-
-    // Also check direct video element / smartplayer instance if available
-    const pollInterval = setInterval(() => {
-      try {
-        const vturb = document.getElementById('vid-6ad53ae248a15a578a6de50f');
-        if (vturb) {
-          const video = vturb.querySelector('video') || (vturb.shadowRoot && vturb.shadowRoot.querySelector('video'));
-          if (video && typeof video.currentTime === 'number' && video.currentTime >= OFFERS_DELAY_SEC) {
-            setIsRevealed(true);
-          }
-        }
-      } catch {
-        // ignore
+    const handlePlay = () => {
+      if (!player || player.inSmartAutoPlay === true || player.inResume === true) return;
+      playbackStarted = true;
+      checkProgress();
+    };
+    const handleTimeUpdate = (event: Event) => {
+      checkProgress((event as CustomEvent<{ time?: number }>).detail?.time);
+    };
+    const detach = () => {
+      player?.removeEventListener('video:play', handlePlay);
+      player?.removeEventListener('smartautoplay:inactive', handlePlay);
+      player?.removeEventListener('video:timeupdate', handleTimeUpdate);
+      player?.removeEventListener('player:ready', handleTimeUpdate);
+    };
+    const syncPlayer = () => {
+      const next = document.getElementById('vid-6ad53ae248a15a578a6de50f') as PlaybackElement | null;
+      if (next !== player) {
+        detach();
+        player = next;
+        playbackStarted = false;
+        player?.addEventListener('video:play', handlePlay);
+        player?.addEventListener('smartautoplay:inactive', handlePlay);
+        player?.addEventListener('video:timeupdate', handleTimeUpdate);
+        player?.addEventListener('player:ready', handleTimeUpdate);
       }
-    }, 1000);
+      checkProgress();
+    };
 
+    syncPlayer();
+    // Discovery/fallback only: reads video time and never increments a clock.
+    const pollInterval = setInterval(syncPlayer, 500);
     return () => {
-      clearTimeout(timer);
       clearInterval(pollInterval);
-      window.removeEventListener('message', handleMsg);
+      detach();
     };
   }, [isRevealed]);
 
